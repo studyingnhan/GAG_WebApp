@@ -1,3 +1,11 @@
+import gdown
+import os
+
+model_path = "resnet50_gender_age_fine_tune_best.keras"
+if not os.path.exists(model_path):
+    gdown.download("https://drive.google.com/uc?id=1eMc6HrgiPn59pFX9N6R79yKtzzj5CbSu", model_path, quiet=False)
+
+
 from flask import Flask, render_template, request
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications import resnet50
