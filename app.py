@@ -14,7 +14,7 @@ if not os.path.exists(model_path):
         model_path,
         quiet=False
     )
-
+os.makedirs("static/uploaded", exist_ok=True)
 app = Flask(__name__)
 model = load_model(model_path)
 
