@@ -38,11 +38,15 @@ model_path = "resnet50_gender_age_fine_tune_best.keras"
 if not os.path.exists(model_path):
     download_keras_model()
 
-if os.path.exists(model_path):
+if os.path.exists(model_path) and os.path.getsize(model_path) > 1000000: 
     model = load_model(model_path)
 else:
-    raise RuntimeError("Model file not found even after download.")
+    raise RuntimeError("Model file is invalid or incomplete.")
 
+exit_code = subprocess.call(f"curl -Lb ./cookie '{final_url}' -o {output}", shell=True)
+
+if exit_code != 0 or not os.path.exists(output) or os.path.getsize(output) < 1000000:
+    raise RuntimeError("❌ Failed to download the model file from Google Drive. File too small or missing.")
 
 app = Flask(__name__)
 model = load_model(model_path)
