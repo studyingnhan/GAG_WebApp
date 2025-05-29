@@ -1,17 +1,13 @@
 import os
 import subprocess
-import re
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications import resnet50
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
-from PIL import Image
 import numpy as np
 
 def download_keras_model():
-    import subprocess
-
     url = "https://github.com/studyingnhan/GAG_WebApp/releases/download/GAG/resnet50_gender_age_fine_tune_best.keras"
     output = "resnet50_gender_age_fine_tune_best.keras"
 
@@ -19,10 +15,11 @@ def download_keras_model():
     exit_code = subprocess.call(f"curl -L '{url}' -o {output}", shell=True)
 
     if exit_code != 0 or not os.path.exists(output) or os.path.getsize(output) < 1000000:
-        raise RuntimeError("❌ Failed to download model from GitHub Releases.")
+        raise RuntimeError("Failed to download model from GitHub Releases.")
     print("Model downloaded successfully!")
 
 model_path = "resnet50_gender_age_fine_tune_best.keras"
+
 if not os.path.exists(model_path):
     download_keras_model()
 
@@ -31,13 +28,7 @@ if os.path.exists(model_path) and os.path.getsize(model_path) > 1000000:
 else:
     raise RuntimeError("Model file is invalid or incomplete.")
 
-exit_code = subprocess.call(f"curl -Lb ./cookie '{final_url}' -o {output}", shell=True)
-
-if exit_code != 0 or not os.path.exists(output) or os.path.getsize(output) < 1000000:
-    raise RuntimeError("Failed to download the model file from Google Drive. File too small or missing.")
-
 app = Flask(__name__)
-model = load_model(model_path)
 
 gender_labels = ['Female', 'Male']
 age_labels = ['Adult', 'Child', 'Elderly', 'Teen']
