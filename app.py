@@ -38,6 +38,12 @@ model_path = "resnet50_gender_age_fine_tune_best.keras"
 if not os.path.exists(model_path):
     download_keras_model()
 
+if os.path.exists(model_path):
+    model = load_model(model_path)
+else:
+    raise RuntimeError("Model file not found even after download.")
+
+
 app = Flask(__name__)
 model = load_model(model_path)
 
