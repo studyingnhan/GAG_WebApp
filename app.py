@@ -1,9 +1,9 @@
-import gdown
 import os
 
 model_path = "resnet50_gender_age_fine_tune_best.keras"
 if not os.path.exists(model_path):
-    gdown.download("https://drive.google.com/uc?id=1eMc6HrgiPn59pFX9N6R79yKtzzj5CbSu", model_path, quiet=False)
+    print("Downloading model via curl...")
+    os.system("curl -L -o resnet50_gender_age_fine_tune_best.keras 'https://drive.google.com/uc?export=download&id=1eMc6HrgiPn59pFX9N6R79yKtzzj5CbSu'")
 
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request
