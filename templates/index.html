@@ -1,1 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Trông tôi như thế nào?</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .main-card {
+            max-width: 900px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h4 class="text-center text-primary mb-3">📘 Giới thiệu Dự án</h4>
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <p class="text-muted" style="font-size: 1rem; text-align: justify;">
+                Dự án này được phát triển như một phần bài tập cuối kỳ trong học phần Trí tuệ Nhân tạo (AI) - INS3080 - Trường Quốc tế – ĐHQGHN.
+                <br><br>
+                Mục tiêu của dự án là xây dựng mô hình học sâu có khả năng phân loại giới tính và nhóm tuổi từ ảnh chân dung, áp dụng mô hình ResNet50 kết hợp kỹ thuật Transfer Learning. Ứng dụng được triển khai bằng Flask, giúp người dùng có thể tương tác trực tiếp thông qua giao diện web đơn giản, dễ sử dụng.
+                <br><br>
+                Mô hình đã được huấn luyện và tinh chỉnh trên tập dữ liệu ảo hóa gồm 4200 ảnh chân dung được gán nhãn giới tính (Nam/Nữ) và nhóm tuổi (Child, Teen, Adult, Elderly). Kết quả dự đoán hiển thị cùng xác suất giúp người dùng có cái nhìn rõ hơn về hiệu quả mô hình.
+            </p>
+        </div>
+    </div>
+</div>
+
+    <div class="container py-5">
+        <div class="main-card card shadow p-5">
+            <div class="text-center mb-4">
+                <h1 class="text-primary">🧠 Dự đoán Giới tính & Nhóm tuổi từ ảnh chân dung</h1>
+                <p class="text-muted">
+                    Tải lên một bức ảnh để tao phân tích và đưa ra dự đoán xem nào.
+                </p>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="image" class="form-label">📷 Chọn ảnh chân dung</label>
+                    <input type="file" name="image" id="image" class="form-control" accept="image/*" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-danger">🔍 Đoán thử xem</button>
+                </div>
+            </form>
+
+            {% if result %}
+                <hr class="my-4">
+                <div class="text-center">
+                    <h4 class="text-success">{{ result }}</h4>
+                    <img src="{{ image_path }}" class="img-thumbnail mt-3" width="250">
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container-fluid mt-5 px-5">
+        <h4 class="text-center mb-4 text-secondary">📌 Đây là một số mẹo dành cho bạn</h4>
+    
+        <div class="row text-center">
+            <div class="col-md-4">
+                <img src="https://img.icons8.com/color/48/user-group-man-man.png"/>
+                <h6 class="mt-2">Tại sao một số người trông trẻ hơn tuổi thật?</h6>
+                <p class="text-muted small">Tuổi khuôn mặt khác với tuổi thật, có thể do lối sống, biểu cảm, hoặc yếu tố di truyền.</p>
+            </div>
+            <div class="col-md-4">
+                <img src="https://img.icons8.com/color/48/visible.png"/>
+                <h6 class="mt-2">Làm thế nào để nhìn trẻ hơn?</h6>
+                <p class="text-muted small">Giữ sức khỏe, hạn chế căng thẳng, chăm sóc da và duy trì lối sống lành mạnh sẽ giúp bạn trẻ lâu.</p>
+            </div>
+            <div class="col-md-4">
+                <img src="https://img.icons8.com/color/48/artificial-intelligence.png"/>
+                <h6 class="mt-2">AI đoán tuổi như thế nào?</h6>
+                <p class="text-muted small">Mô hình học sâu phân tích đặc trưng khuôn mặt để đưa ra dự đoán về giới tính và nhóm tuổi.</p>
+            </div>
+        </div>
+    </div>
+    
+    
+    <footer class="bg-light text-center py-3 mt-5 text-muted" style="font-size: 0.9rem;">
+        © 2025 GAG Project – Nhóm 5 | INS3080 – Lecturer: Dr Ha Manh Hung<br>
+        Thành viên nhóm: Nguyen Minh Thuy – Hoang Phuc Nhan – Tran Thi Khanh Huyen - Vi Thi Thuy Tien
+    </footer>
+    
+</body>
+</html>
 
