@@ -25,7 +25,7 @@ def download_keras_model():
     confirm = token[0] if token else ""
 
     final_url = f"https://drive.google.com/uc?export=download&confirm={confirm}&id=1eMc6HrgiPn59pFX9N6R79yKtzzj5CbSu"
-    print("⬇ Downloading large model from Google Drive...")
+    print("Downloading large model from Google Drive...")
     exit_code = subprocess.call(f"curl -Lb ./cookie '{final_url}' -o {output}", shell=True)
 
     if exit_code != 0 or not os.path.exists(output):
@@ -46,7 +46,7 @@ else:
 exit_code = subprocess.call(f"curl -Lb ./cookie '{final_url}' -o {output}", shell=True)
 
 if exit_code != 0 or not os.path.exists(output) or os.path.getsize(output) < 1000000:
-    raise RuntimeError("❌ Failed to download the model file from Google Drive. File too small or missing.")
+    raise RuntimeError("Failed to download the model file from Google Drive. File too small or missing.")
 
 app = Flask(__name__)
 model = load_model(model_path)
