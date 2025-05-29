@@ -11,28 +11,16 @@ import numpy as np
 
 def download_keras_model():
     import subprocess
-    import re
 
-    url = "https://drive.google.com/uc?export=download&id=1eMc6HrgiPn59pFX9N6R79yKtzzj5CbSu"
+    url = "https://github.com/studyingnhan/GAG_WebApp/releases/download/GAG/resnet50_gender_age_fine_tune_best.keras"
     output = "resnet50_gender_age_fine_tune_best.keras"
 
-    print("Getting Google Drive confirm token...")
-    subprocess.call(f"curl -c ./cookie -s -L '{url}' > /dev/null", shell=True)
+    print("Downloading model from GitHub Releases...")
+    exit_code = subprocess.call(f"curl -L '{url}' -o {output}", shell=True)
 
-    with open("cookie", "r") as f:
-        content = f.read()
-    token = re.findall(r"download_warning.*\s+(\S+)", content)
-    confirm = token[0] if token else ""
-
-    final_url = f"https://drive.google.com/uc?export=download&confirm={confirm}&id=1eMc6HrgiPn59pFX9N6R79yKtzzj5CbSu"
-    print("Downloading large model from Google Drive...")
-    exit_code = subprocess.call(f"curl -Lb ./cookie '{final_url}' -o {output}", shell=True)
-
-    if exit_code != 0 or not os.path.exists(output):
-        raise RuntimeError("Failed to download the model file from Google Drive.")
-    
+    if exit_code != 0 or not os.path.exists(output) or os.path.getsize(output) < 1000000:
+        raise RuntimeError("❌ Failed to download model from GitHub Releases.")
     print("Model downloaded successfully!")
-
 
 model_path = "resnet50_gender_age_fine_tune_best.keras"
 if not os.path.exists(model_path):
