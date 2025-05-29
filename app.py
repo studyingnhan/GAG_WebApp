@@ -16,7 +16,7 @@ def download_keras_model():
     url = "https://drive.google.com/uc?export=download&id=1eMc6HrgiPn59pFX9N6R79yKtzzj5CbSu"
     output = "resnet50_gender_age_fine_tune_best.keras"
 
-    print("🔎 Getting Google Drive confirm token...")
+    print("Getting Google Drive confirm token...")
     subprocess.call(f"curl -c ./cookie -s -L '{url}' > /dev/null", shell=True)
 
     with open("cookie", "r") as f:
