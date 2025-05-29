@@ -1,30 +1,31 @@
-import os
 import gdown
-import numpy as np
-from flask import Flask, render_template, request
-from tensorflow.keras.models import load_model
-from tensorflow.keras.applications.resnet50 import preprocess_input
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
-from PIL import Image
+import os
 
 model_path = "resnet50_gender_age_fine_tune_best.keras"
 if not os.path.exists(model_path):
-    gdown.download(
-        "https://drive.google.com/uc?id=1eMc6HrgiPn59pFX9N6R79yKtzzj5CbSu",
-        model_path,
-        quiet=False
-    )
-os.makedirs("static/uploaded", exist_ok=True)
+    gdown.download("https://drive.google.com/uc?id=1eMc6HrgiPn59pFX9N6R79yKtzzj5CbSu", model_path, quiet=False)
+
+from werkzeug.utils import secure_filename
+from flask import Flask, render_template, request
+from tensorflow.keras.models import load_model
+from tensorflow.keras.applications import resnet50
+from tensorflow.keras.applications.resnet50 import preprocess_input
+from tensorflow.keras.preprocessing.image import img_to_array
+from PIL import Image
+import numpy as np
+import os
+
 app = Flask(__name__)
-model = load_model(model_path)
+model = load_model("resnet50_gender_age_fine_tune_best.keras")
 
 gender_labels = ['Female', 'Male']
-age_labels = ['Child', 'Teen', 'Adult', 'Elderly']
+age_labels = ['Adult' 'Child' 'Elderly' 'Teen']
 
 def predict(image_path):
+    from tensorflow.keras.preprocessing.image import load_img  
     img = load_img(image_path, target_size=(224, 224))
     img_array = img_to_array(img).astype("float32")
-    img_array = preprocess_input(img_array)
+    img_array = resnet50.preprocess_input(img_array.copy())
     img_array = np.expand_dims(img_array, axis=0)
 
     predictions = model.predict(img_array)
@@ -39,6 +40,8 @@ def predict(image_path):
 
     return f"Giới tính: {gender_result} | Nhóm tuổi: {age_result}"
 
+os.makedirs("static/uploaded", exist_ok=True)
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     result = None
@@ -46,9 +49,8 @@ def index():
     if request.method == "POST":
         image = request.files["image"]
         if image:
-            upload_dir = "static/uploaded"
-            os.makedirs(upload_dir, exist_ok=True)
-            image_path = os.path.join(upload_dir, image.filename)
+            filename = secure_filename(image.filename)
+            image_path = os.path.join("static/uploaded", filename)
             image.save(image_path)
             result = predict(image_path)
     return render_template("index.html", result=result, image_path=image_path)
