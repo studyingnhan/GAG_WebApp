@@ -10,6 +10,9 @@ from PIL import Image
 import numpy as np
 
 def download_keras_model():
+    import subprocess
+    import re
+
     url = "https://drive.google.com/uc?export=download&id=1eMc6HrgiPn59pFX9N6R79yKtzzj5CbSu"
     output = "resnet50_gender_age_fine_tune_best.keras"
 
@@ -23,7 +26,13 @@ def download_keras_model():
 
     final_url = f"https://drive.google.com/uc?export=download&confirm={confirm}&id=1eMc6HrgiPn59pFX9N6R79yKtzzj5CbSu"
     print("⬇ Downloading large model from Google Drive...")
-    subprocess.call(f"curl -Lb ./cookie '{final_url}' -o {output}", shell=True)
+    exit_code = subprocess.call(f"curl -Lb ./cookie '{final_url}' -o {output}", shell=True)
+
+    if exit_code != 0 or not os.path.exists(output):
+        raise RuntimeError("Failed to download the model file from Google Drive.")
+    
+    print("Model downloaded successfully!")
+
 
 model_path = "resnet50_gender_age_fine_tune_best.keras"
 if not os.path.exists(model_path):
