@@ -29,7 +29,6 @@ model_path = "resnet50_gender_age_fine_tune_best.keras"
 if not os.path.exists(model_path):
     download_keras_model()
 
-# Flask 
 app = Flask(__name__)
 model = load_model(model_path)
 
@@ -51,6 +50,7 @@ def predict(image_path):
 
     gender_result = f"{gender_labels[gender_idx]} – {gender_probs[gender_idx]*100:.1f}%"
     age_result = f"{age_labels[age_idx]} – {age_probs[age_idx]*100:.1f}%"
+
     return f"Giới tính: {gender_result} | Nhóm tuổi: {age_result}"
 
 os.makedirs("static/uploaded", exist_ok=True)
